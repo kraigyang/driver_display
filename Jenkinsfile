@@ -72,8 +72,10 @@ pipeline {
         //     junit'**/target/*.xml'
         // }
         failure{
-            mail to:"${params.email}",subject:"the pipeline failed"，
-            body:"${env.name}\n pipeline '${JOB_NAME}'(${BUILD_NUMBER}) (${allureReportUrl})"
+            script{
+                mail to:"${params.email}",subject:"the pipeline failed"，
+                body:"${env.name}\n pipeline '${JOB_NAME}'(${BUILD_NUMBER}) (${allureReportUrl})"
+            }
         }
         success{
             script{
