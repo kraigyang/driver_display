@@ -37,7 +37,7 @@ pipeline {
         }
         stage('MainRepoTest'){
             steps{
-               sh"rm -rf  ${params.mainRepoFolder}; git clone ${params.mainRepo}; echo `pwd`;"
+               sh"rm -rf  ${params.mainRepoFolder}; git clone ${params.mainRepo}; cd ${params.mainRepoFolder}; echo `pwd`;"
             }
         }
 
