@@ -24,6 +24,8 @@ pipeline {
     stages {
         stage('RelatedRepoTest1'){
             steps{
+                sh 'echo $PATH'
+                sh 'printenv'
                 sh"git clone ${params.relatedRepo1}; cd ${gitlabSourceRepoName}; echo `pwd`; cd .."
             }
         }
