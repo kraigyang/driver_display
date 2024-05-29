@@ -8,6 +8,7 @@ pipeline {
         string(name:'email',defaultValue:'1445323887@qq.com',description:'Email address to send the report to')
     }
 
+
     environment {
         name = "StarryOS"
         JENKINS_URL = "http://49.51.192.19:9095"
