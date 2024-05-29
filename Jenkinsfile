@@ -2,17 +2,19 @@ pipeline {
     agent any
 
     parameters{
-        string(name:'mainRepo',defaultValue:'https://github.com/henshing/Starry.git',description:'main repository')
+        string(name:'mainRepo',defaultValue:'https://github.com/kraigyang/Starry.git',description:'main repository')
         string(name:'relatedRepo1',defaultValue:'https://github.com/kraigyang/driver_display.git',description:'related repository')
         string(name:'relatedRepo2',defaultValue:'https://github.com/kraigyang/axtrap.git',description:'related repository')
         string(name:'email',defaultValue:'528198540@qq.com',description:'Email address to send the report to')
     }
     
     environment {
-        name = "StarryOS"
+        name = "Starry"
         JENKINS_URL = "http://49.51.192.19:9095"
         JOB_PATH = "job/github_test_yk"
         REPORT_PATH = "allure"
+        GITHUB_URL_PREFIX = "https://github.com/kraigyang/"
+        GITHUB_URL_SUFFIX = ".git"
         //根据内置变量currentBuild获取构建号
         buildNumber = "${currentBuild.number}"
         // 构建 Allure 报告地址
@@ -22,14 +24,12 @@ pipeline {
     stages {
         stage('RelatedRepoTest1'){
             steps{
-                def folder = $(echo \$(basename \${params.relatedRepo1}) | cut -d . -f1)
-                sh"git clone ${params.relatedRepo1}; cd $folder; echo `pwd`; cd .."
+                sh"git clone ${params.relatedRepo1}; repofolder=$(echo `basename ${params.relatedRepo1}` | cut -d . -f1); cd ${repofolder}; echo `pwd`; cd .."
             }
         }
         stage('MainRepoTest'){
             steps{
-               def folder = $(echo \$(basename \${params.mainRepo}) | cut -d . -f1)
-                sh"git clone ${params.mainRepo}; cd $folder; echo `pwd`"
+                sh"git clone ${params.mainRepo}; cd ${env.name}; echo `pwd`"
             }
         }
 
