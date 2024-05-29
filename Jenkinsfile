@@ -3,8 +3,8 @@ pipeline {
 
     parameters{
         string(name:'mainRepo',defaultValue:'https://github.com/henshing/Starry.git',description:'main repository')
-        string(name:'relatedRepo1',defaultValue:'https://github.com/henshing/driver_display.git',description:'related repository')
-        string(name:'relatedRepo2',defaultValue:'https://github.com/henshing/axtrap.git',description:'related repository')
+        string(name:'relatedRepo1',defaultValue:'https://github.com/kraigyang/driver_display.git',description:'related repository')
+        string(name:'relatedRepo2',defaultValue:'https://github.com/kraigyang/axtrap.git',description:'related repository')
         string(name:'email',defaultValue:'528198540@qq.com',description:'Email address to send the report to')
     }
     
@@ -20,15 +20,14 @@ pipeline {
     }
 
     stages {
-        stage('MainRepoTest'){
-            steps{
-                sh"git clone ${params.mainRepo}; cd `basename ${params.mainRepo}`; echo `pwd`; cd .."
-            }
-        }
-
         stage('RelatedRepoTest1'){
             steps{
-                sh"git clone ${params.relatedRepo1}; cd `basename ${params.relatedRepo1}`; echo `pwd`;"
+                sh"git clone ${params.relatedRepo1}; cd $(echo `basename ${params.relatedRepo1}` | cut -d . -f1); echo `pwd`; cd .."
+            }
+        }
+        stage('MainRepoTest'){
+            steps{
+                sh"git clone ${params.mainRepo}; cd $(echo `basename ${params.mainRepo}` | cut -d . -f1); echo `pwd`"
             }
         }
 
