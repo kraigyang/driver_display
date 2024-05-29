@@ -22,13 +22,13 @@ pipeline {
     stages {
         stage('RelatedRepoTest1'){
             steps{
-                def folder = $(echo `basename ${params.relatedRepo1}` | cut -d . -f1)
+                def folder = $(echo $(basename ${params.relatedRepo1}) | cut -d . -f1)
                 sh"git clone ${params.relatedRepo1}; cd $folder; echo `pwd`; cd .."
             }
         }
         stage('MainRepoTest'){
             steps{
-               def folder = $(echo `basename ${params.mainRepo}` | cut -d . -f1)
+               def folder = $(echo $(basename ${params.mainRepo}) | cut -d . -f1)
                 sh"git clone ${params.mainRepo}; cd $folder; echo `pwd`"
             }
         }
