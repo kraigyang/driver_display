@@ -16,6 +16,7 @@ pipeline {
     
     environment {
         name = "ComponentStarry"
+        mainRepoName = "ComponentStarry"
         JENKINS_URL = "http://49.51.192.19:9095"
         JOB_PATH = "job/github_test_yk"
         REPORT_PATH = "allure"
@@ -45,13 +46,13 @@ pipeline {
                     steps{
                             sh 'echo $PATH'
                             sh 'printenv'
-                            sh 'cp -r /home/jenkins_home/pytest $WORKSPACE/Starry'
+                            sh 'cp -r /home/jenkins_home/pytest $WORKSPACE/$mainRepoName'
                     }
                 }
         stage('编译测试'){
                     steps {
                             echo "--------------------------------------------test start------------------------------------------------"
-                            sh ' export pywork=$WORKSPACE/Starry && cd $pywork/pytest  && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                            sh ' export pywork=$WORKSPACE/$mainRepoName && cd $pywork/pytest  && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
                             echo "--------------------------------------------test end  ------------------------------------------------"
 
                     }
@@ -69,7 +70,7 @@ pipeline {
         stage('结果展示'){
                     steps{
                         echo "-------------------------allure report generating start---------------------------------------------------"
-                        sh 'export pywork=$WORKSPACE && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
+                        sh 'export pywork=$WORKSPACE/$mainRepoName && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
                         allure includeProperties: false, jdk: 'jdk21', report: 'pytest/report/html', results: [[path: 'pytest/report/result']]
                         echo "-------------------------allure report generating end ----------------------------------------------------"
                     }
