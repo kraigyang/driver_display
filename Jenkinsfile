@@ -24,7 +24,7 @@ pipeline {
     stages {
         stage('RelatedRepoTest1'){
             steps{
-                sh"git clone ${params.relatedRepo1}; repofolder=$(echo `basename \${params.relatedRepo1}` | cut -d . -f1); cd ${repofolder}; echo `pwd`; cd .."
+                sh"git clone ${params.relatedRepo1}; export repofolder=`echo $(basename ${params.relatedRepo1}) | cut -d . -f1`; cd ${repofolder}; echo `pwd`; cd .."
             }
         }
         stage('MainRepoTest'){
