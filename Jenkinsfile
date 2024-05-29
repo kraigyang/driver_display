@@ -6,7 +6,7 @@ pipeline {
         string(name:'relatedRepo1',defaultValue:'https://github.com/kraigyang/driver_display.git',description:'related repository')
         string(name:'relatedRepo2',defaultValue:'https://github.com/kraigyang/axtrap.git',description:'related repository')
 
-        string(name:'mainRepoFolder',defaultValue:'Starry',description:'main repository')
+        string(name:'mainRepoFolder',defaultValue:'ComponentStarry',description:'main repository')
         string(name:'relatedRepo1Folder',defaultValue:'driver_display',description:'related repository')
         string(name:'relatedRepo2Folder',defaultValue:'axtrap',description:'related repository')
 
@@ -15,7 +15,7 @@ pipeline {
     
     
     environment {
-        name = "Starry"
+        name = "ComponentStarry"
         JENKINS_URL = "http://49.51.192.19:9095"
         JOB_PATH = "job/github_test_yk"
         REPORT_PATH = "allure"
