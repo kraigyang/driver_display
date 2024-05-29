@@ -5,6 +5,11 @@ pipeline {
         string(name:'mainRepo',defaultValue:'https://github.com/kraigyang/Starry.git',description:'main repository')
         string(name:'relatedRepo1',defaultValue:'https://github.com/kraigyang/driver_display.git',description:'related repository')
         string(name:'relatedRepo2',defaultValue:'https://github.com/kraigyang/axtrap.git',description:'related repository')
+
+        string(name:'mainRepoFolder',defaultValue:'Starry',description:'main repository')
+        string(name:'relatedRepo1Folder',defaultValue:'driver_display',description:'related repository')
+        string(name:'relatedRepo2Folder',defaultValue:'axtrap',description:'related repository')
+
         string(name:'email',defaultValue:'528198540@qq.com',description:'Email address to send the report to')
     }
     
@@ -27,12 +32,12 @@ pipeline {
             steps{
                 sh 'echo $PATH'
                 sh 'printenv'
-                sh"git clone ${params.relatedRepo1}; echo `pwd`;"
+                sh"rm -rf  ${params.relatedRepo1Folder}; git clone ${params.relatedRepo1}; echo `pwd`;"
             }
         }
         stage('MainRepoTest'){
             steps{
-               sh"git clone ${params.mainRepo}; echo `pwd`;"
+               sh"rm -rf  ${params.mainRepoFolder}; git clone ${params.mainRepo}; echo `pwd`;"
             }
         }
 
