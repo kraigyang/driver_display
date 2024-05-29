@@ -45,13 +45,13 @@ pipeline {
                     steps{
                             sh 'echo $PATH'
                             sh 'printenv'
-                            sh 'cp -r /home/jenkins_home/pytest "$WORKSPACE"/"${params.mainRepoFolder}"'
+                            sh 'cp -r /home/jenkins_home/pytest $WORKSPACE/${env.name}'
                     }
                 }
         stage('编译测试'){
                     steps {
                             echo "--------------------------------------------test start------------------------------------------------"
-                            sh ' export pywork="$WORKSPACE"/"${params.mainRepoFolder}" && cd $pywork/pytest  && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                            sh ' export pywork="$WORKSPACE"/"${env.name}" && cd $pywork/pytest  && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
                             echo "--------------------------------------------test end  ------------------------------------------------"
 
                     }
