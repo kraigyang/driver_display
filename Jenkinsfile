@@ -71,7 +71,7 @@ pipeline {
                     steps{
                         echo "-------------------------allure report generating start---------------------------------------------------"
                         sh 'export pywork=$WORKSPACE/$mainRepoName && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
-                        allure includeProperties: false, jdk: 'jdk17', report: 'report/html', results: [[path: 'report/result']]
+                        allure includeProperties: false, jdk: 'jdk17', report: '$WORKSPACE/$mainRepoName/pytest/report/html', results: [[path: '$WORKSPACE/$mainRepoName/pytest/report/result']]
                         echo "-------------------------allure report generating end ----------------------------------------------------"
                     }
                 }
