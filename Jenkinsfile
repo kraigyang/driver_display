@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters{
-        string(name:'mainRepo',defaultValue:'https://github.com/kraigyang/Starry.git',description:'main repository')
+        string(name:'mainRepo',defaultValue:'https://github.com/kraigyang/ComponentStarry.git',description:'main repository')
         string(name:'relatedRepo1',defaultValue:'https://github.com/kraigyang/driver_display.git',description:'related repository')
         string(name:'relatedRepo2',defaultValue:'https://github.com/kraigyang/axtrap.git',description:'related repository')
 
