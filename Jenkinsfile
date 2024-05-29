@@ -5,17 +5,16 @@ pipeline {
         string(name:'mainRepo',defaultValue:'https://github.com/henshing/Starry.git',description:'main repository')
         string(name:'relatedRepo1',defaultValue:'https://github.com/henshing/driver_display.git',description:'related repository')
         string(name:'relatedRepo2',defaultValue:'https://github.com/henshing/axtrap.git',description:'related repository')
-        string(name:'email',defaultValue:'1445323887@qq.com',description:'Email address to send the report to')
+        string(name:'email',defaultValue:'528198540@qq.com',description:'Email address to send the report to')
     }
-
-
+    
     environment {
         name = "StarryOS"
         JENKINS_URL = "http://49.51.192.19:9095"
         JOB_PATH = "job/github_test_yk"
         REPORT_PATH = "allure"
         //根据内置变量currentBuild获取构建号
-        buildNumber = currentBuild.number
+        buildNumber = "${currentBuild.number}"
         // 构建 Allure 报告地址
         allureReportUrl = "${JENKINS_URL}/${JOB_PATH}/${buildNumber}/${REPORT_PATH}"
     }
