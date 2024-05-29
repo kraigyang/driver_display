@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     parameters{
-        string(name:'mainRepo',defaultValue:'https://github.com/kraigyang/Starry.git',description:'main repository')
-        string(name:'relatedRepo1',defaultValue:'https://github.com/kraigyang/driver_display.git',description:'related repository')
-        string(name:'relatedRepo2',defaultValue:'https://github.com/kraigyang/axtrap.git',description:'related repository')
+        string(name:'mainRepo',defaultValue:'Starry',description:'main repository')
+        string(name:'relatedRepo1',defaultValue:'driver_display',description:'related repository')
+        string(name:'relatedRepo2',defaultValue:'axtrap',description:'related repository')
         string(name:'email',defaultValue:'528198540@qq.com',description:'Email address to send the report to')
     }
     
@@ -26,12 +26,12 @@ pipeline {
             steps{
                 sh 'echo $PATH'
                 sh 'printenv'
-                sh"git clone ${params.relatedRepo1}; cd ${gitlabSourceRepoName}; echo `pwd`; cd .."
+                sh"git clone ${env.GITHUB_URL_PREFIX}${params.relatedRepo1}${env.GITHUB_URL_SUFFIX}; cd ${params.relatedRepo1}; echo `pwd`; cd .."
             }
         }
         stage('MainRepoTest'){
             steps{
-                sh"git clone ${params.mainRepo}; cd ${env.name}; echo `pwd`"
+               sh"git clone ${env.GITHUB_URL_PREFIX}${params.mainRepo}${env.GITHUB_URL_SUFFIX}; cd ${params.mainRepo}; echo `pwd`; cd .."
             }
         }
 
