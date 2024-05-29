@@ -5,7 +5,7 @@ pipeline {
         //   steps {
         //         script{
         //                 // 打印所有环境变量
-        //                 sh 'echo $PATH--'
+        //                 sh 'echo $PATH'
         //                 sh 'printenv'
         //                 // updateGitlabCommitStatus name: 'build', state: 'pending'
         //                 // 判断当前分支名
