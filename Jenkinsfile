@@ -29,7 +29,7 @@ pipeline {
 
 def repos() {
   // return ["ComponentStarry", "driver_display",  "axtrap"]
-  return ["driver_display"]
+  return ["driver_display",  "axtrap"]
 }
 
 def repoJobs() {
