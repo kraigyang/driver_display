@@ -31,7 +31,7 @@ pipeline {
     stages {
          stage("多仓CI"){
         //     steps {
-        //         script {
+                 script {
                      for (repo in relatedRepos) {
                          echo "current repo is $repo"
                         stage("代码检出"){
@@ -78,7 +78,7 @@ pipeline {
                                     }
                                 }
                      } // For
-        //         } // Script
+                 } // Script
         //     } // Steps
          } // Stage
     } // Stages
