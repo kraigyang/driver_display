@@ -34,7 +34,7 @@ pipeline {
                 script {
                     for (repo in relatedRepos) {
                         echo "current repo is $repo"
-                        stage("$repo仓: 代码检出"){
+                        stage("代码检出"){
                             steps{
                                 echo "$repo仓: 代码检出"
                                 sh"rm -rf  $repo; git clone $GITHUB_URL_PREFIX$repo$GITHUB_URL_SUFFIX; echo `pwd`;"
@@ -46,7 +46,7 @@ pipeline {
                         //     }
                         // }
                 
-                        stage("$repo仓: pytest嵌入"){
+                        stage("pytest嵌入"){
                                     steps{
                                             echo "$repo仓: pytest嵌入"
                                             sh 'echo $PATH'
@@ -54,7 +54,7 @@ pipeline {
                                             sh 'cp -r /home/jenkins_home/pytest $WORKSPACE/$repo'
                                     }
                                 }
-                        stage("$repo仓: 编译测试"){
+                        stage("编译测试"){
                                     steps {
                                             echo "$repo仓: 编译测试"
                                             echo "--------------------------------------------test start------------------------------------------------"
@@ -64,7 +64,7 @@ pipeline {
                                     }
                                 }
                 
-                        stage("$repo仓: 报告生成") {
+                        stage("报告生成") {
                             steps {
                                 script {
                                     echo "$repo仓: 报告生成"
@@ -74,7 +74,7 @@ pipeline {
                             }
                         }
                 
-                        stage("$repo仓: 结果展示"){
+                        stage("结果展示"){
                                     steps{
                                         echo "$repo仓: 结果展示"
                                         echo "-------------------------allure report generating start---------------------------------------------------"
