@@ -39,7 +39,7 @@ def repoJobs() {
     }
     jobs[repo] = { 
         stage(repo) {
-           echo "Step for $repo"
+           echo "Step for $repo, REPONAME is $REPONAME"
         }
         stage(repo + "代码检出"){
            echo "$repo 代码检出"
