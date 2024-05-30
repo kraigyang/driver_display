@@ -37,7 +37,7 @@ pipeline {
                         stage("代码检出"){
                             steps{
                                echo "代码检出"
-                               sh"rm -rf  $repo; git clone $GITHUB_URL_PREFIX$repo$GITHUB_URL_SUFFIX; echo `pwd`;"
+                               sh"rm -rf  $mainRepoName; git clone $GITHUB_URL_PREFIX$mainRepoName$GITHUB_URL_SUFFIX; echo `pwd`;"
                             }
                         }
                         stage("pytest嵌入"){
@@ -45,14 +45,14 @@ pipeline {
                                             echo "pytest嵌入"
                                             sh 'echo $PATH'
                                             sh 'printenv'
-                                            sh 'cp -r /home/jenkins_home/pytest $WORKSPACE/$repo'
+                                            sh 'cp -r /home/jenkins_home/pytest $WORKSPACE/$mainRepoName'
                                     }
                                 }
                         stage("编译测试"){
                                     steps {
                                             echo "编译测试"
                                             echo "--------------------------------------------test start------------------------------------------------"
-                                            // sh ' export pywork=$WORKSPACE/$mainRepoName && cd $pywork/pytest  && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                                            sh ' export pywork=$WORKSPACE/$mainRepoName && cd $pywork/pytest  && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
                                             echo "--------------------------------------------test end  ------------------------------------------------"
                 
                                     }
@@ -72,8 +72,8 @@ pipeline {
                                     steps{
                                         echo "结果展示"
                                         echo "-------------------------allure report generating start---------------------------------------------------"
-                                        // sh 'export pywork=$WORKSPACE/$mainRepoName && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
-                                        // allure includeProperties: false, jdk: 'jdk17', report: "$mainRepoName/pytest/report/html", results: [[path: "$mainRepoName/pytest/report/result"]]
+                                        sh 'export pywork=$WORKSPACE/$mainRepoName && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
+                                        allure includeProperties: false, jdk: 'jdk17', report: "$mainRepoName/pytest/report/html", results: [[path: "$mainRepoName/pytest/report/result"]]
                                         echo "-------------------------allure report generating end ----------------------------------------------------"
                                     }
                                 }
