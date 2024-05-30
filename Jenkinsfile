@@ -50,7 +50,9 @@ def repoJobs() {
             sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo"
         }
         stage(repo + "编译测试"){
-            repoName=$repo
+            environment {
+               repoName="$repo"
+            }
             echo "$repo 编译测试"
             sh 'printenv'
             echo "--------------------------------------------$repo test start------------------------------------------------"
@@ -63,9 +65,13 @@ def repoJobs() {
             echo "$repo Allure Report URL: ${allureReportUrl}"
         }
         stage(repo + "结果展示"){
+            environment {
+               repoName="$repo"
+            }
             echo "$repo 结果展示"
+            sh 'printenv'
             echo "-------------------------$repo allure report generating start---------------------------------------------------"
-            sh "export pywork=$WORKSPACE/\$repo && cd \$pywork/pytest && allure generate ./report/result -o ./report/html --clean"
+            sh 'export pywork=$WORKSPACE/$repoName && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
             allure includeProperties: false, jdk: 'jdk17', report: "$repo/pytest/report/html", results: [[path: "$repo/pytest/report/result"]]
             echo "-------------------------$repo allure report generating end ----------------------------------------------------"
         }
