@@ -51,7 +51,7 @@ def repoJobs() {
         stage(repo + "编译测试"){
             echo "$repo 编译测试"
             echo "--------------------------------------------$repo test start------------------------------------------------"
-            def shell_cmd = "export pywork=$WORKSPACE/$repo && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir"
+            def shell_cmd = "export pywork=$WORKSPACE/\$repo && cd \$pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir"
             echo "shell_cmd=$shell_cmd"
             sh "$shell_cmd" 
             echo "--------------------------------------------$repo test end  ------------------------------------------------"
