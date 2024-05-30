@@ -33,6 +33,7 @@ pipeline {
             steps {
                 script {
                     for (repo in relatedRepos) {
+                        echo "current repo is $repo"
                         stage("$repo仓: 代码检出"){
                             steps{
                                 sh"rm -rf  $repo; git clone $GITHUB_URL_PREFIX$repo$GITHUB_URL_SUFFIX; echo `pwd`;"
