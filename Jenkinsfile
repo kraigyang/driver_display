@@ -13,7 +13,6 @@ pipeline {
         string(name:'email',defaultValue:'528198540@qq.com',description:'Email address to send the report to')
     }
     
-    
     environment {
         relatedRepos = ["ComponentStarry", "driver_display",  "axtrap"]
         name = "ComponentStarry"
