@@ -50,8 +50,8 @@ def repoJobs() {
             sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo"
         }
         stage(repo + "编译测试"){
-            environment {
-               repoName="$repo"
+            withEnv(["repoName=$repo"]) { // it can override any env variable
+                echo "repoName = ${repoName}"
             }
             echo "$repo 编译测试"
             sh 'printenv'
@@ -65,8 +65,8 @@ def repoJobs() {
             echo "$repo Allure Report URL: ${allureReportUrl}"
         }
         stage(repo + "结果展示"){
-            environment {
-               repoName="$repo"
+            withEnv(["repoName=$repo"]) { // it can override any env variable
+                echo "repoName = ${repoName}"
             }
             echo "$repo 结果展示"
             sh 'printenv'
