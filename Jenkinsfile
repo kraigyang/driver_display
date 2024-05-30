@@ -29,17 +29,16 @@ pipeline {
     }
 
     stages {
-        stage("多仓CI"){
-            steps {
-                script {
-                    for (repo in relatedRepos) {
-                        echo "current repo is $repo"
+        // stage("多仓CI"){
+        //     steps {
+        //         script {
+        //             for (repo in relatedRepos) {
+        //                 echo "current repo is $repo"
                         stage("代码检出"){
-                            echo "$repo仓: 代码检出"
-                            // steps{
-                            //    echo "$repo仓: 代码检出"
-                            //    sh"rm -rf  $repo; git clone $GITHUB_URL_PREFIX$repo$GITHUB_URL_SUFFIX; echo `pwd`;"
-                            // }
+                            steps{
+                               echo "$repo仓: 代码检出"
+                               sh"rm -rf  $repo; git clone $GITHUB_URL_PREFIX$repo$GITHUB_URL_SUFFIX; echo `pwd`;"
+                            }
                         }
                         stage("pytest嵌入"){
                                     steps{
@@ -78,10 +77,10 @@ pipeline {
                                         echo "-------------------------allure report generating end ----------------------------------------------------"
                                     }
                                 }
-                    } // For
-                } // Script
-            } // Steps
-        } // Stage
+        //             } // For
+        //         } // Script
+        //     } // Steps
+        // } // Stage
     } // Stages
 
     post {
