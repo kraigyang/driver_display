@@ -34,12 +34,9 @@ def repos() {
 def repoJobs() {
   jobs = [:]
   repos().each { repo ->
-    environment {
-        REPONAME = $repo
-    }
     jobs[repo] = { 
         stage(repo) {
-           echo "Step for $repo, REPONAME is $REPONAME"
+           echo "Step for $repo"
         }
         stage(repo + "代码检出"){
            echo "$repo 代码检出"
@@ -52,6 +49,9 @@ def repoJobs() {
             sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo"
         }
         stage(repo + "编译测试"){
+            environment {
+                REPONAME = $repo
+            }
             echo "$repo 编译测试"
             echo "--------------------------------------------$repo test start------------------------------------------------"
             sh 'export pywork=$WORKSPACE/$REPONAME && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
@@ -63,6 +63,9 @@ def repoJobs() {
             echo "$repo Allure Report URL: ${allureReportUrl}"
         }
         stage(repo + "结果展示"){
+            environment {
+                REPONAME = $repo
+            }
             echo "$repo 结果展示"
             echo "-------------------------$repo allure report generating start---------------------------------------------------"
             sh 'export pywork=$WORKSPACE/$REPONAME && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
