@@ -29,11 +29,11 @@ pipeline {
     }
 
     stages {
-        // stage("多仓CI"){
+         stage("多仓CI"){
         //     steps {
         //         script {
-        //             for (repo in relatedRepos) {
-        //                 echo "current repo is $repo"
+                     for (repo in relatedRepos) {
+                         echo "current repo is $repo"
                         stage("代码检出"){
                             steps{
                                echo "$repo仓: 代码检出"
@@ -77,10 +77,10 @@ pipeline {
                                         echo "-------------------------allure report generating end ----------------------------------------------------"
                                     }
                                 }
-        //             } // For
+                     } // For
         //         } // Script
         //     } // Steps
-        // } // Stage
+         } // Stage
     } // Stages
 
     post {
