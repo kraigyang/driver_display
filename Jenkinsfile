@@ -4,6 +4,7 @@ pipeline {
     environment {
         name = "ComponentStarry"
         mainRepoName = "ComponentStarry"
+        repoName = "ComponentStarry"
         JENKINS_URL = "http://49.51.192.19:9095"
         JOB_PATH = "job/github_test_yk"
         REPORT_PATH = "allure"
@@ -49,11 +50,11 @@ def repoJobs() {
             sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo"
         }
         stage(repo + "编译测试"){
+            repoName=$repo
             echo "$repo 编译测试"
+            sh 'printenv'
             echo "--------------------------------------------$repo test start------------------------------------------------"
-            def shell_cmd = "export pywork=$WORKSPACE/\$repo && cd \$pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir"
-            echo "shell_cmd=$shell_cmd"
-            sh "$shell_cmd" 
+            sh 'export pywork=$WORKSPACE/$repoName && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
             echo "--------------------------------------------$repo test end  ------------------------------------------------"
         }
         stage(repo + "报告生成") {
