@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Parallel') {
+        stage("多仓CI") {
             steps {
                 script {
-                    parallel parallelJobs()
+                    parallel repoJobs()
                 }
             }
         }
@@ -13,17 +13,18 @@ pipeline {
 }
 
 
-def accounts() {
-  return ["dynamic", "list"]
+def repos() {
+  return ["ComponentStarry", "driver_display",  "axtrap"]
 }
 
-def parallelJobs() {
+def repoJobs() {
   jobs = [:]
 
-  for (account in accounts()) {
-    jobs[account] = { stage(account) {
-       echo "Step for $account"
-     }
+  for (repo in repos()) {
+    jobs[repo] = { 
+        stage(repo) {
+           echo "Step for $repo"
+        }
     }
   }
   return jobs
