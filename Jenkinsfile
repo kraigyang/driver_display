@@ -19,8 +19,7 @@ def repos() {
 
 def repoJobs() {
   jobs = [:]
-
-  for (repo in repos()) {
+  repos().each { repo ->
     jobs[repo] = { 
         stage(repo) {
            echo "Step for $repo"
