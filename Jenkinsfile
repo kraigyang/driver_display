@@ -40,12 +40,6 @@ pipeline {
                                 sh"rm -rf  $repo; git clone $GITHUB_URL_PREFIX$repo$GITHUB_URL_SUFFIX; echo `pwd`;"
                             }
                         }
-                        // stage('MainRepoTest'){
-                        //     steps{
-                        //        sh"rm -rf  ${params.mainRepoFolder}; git clone ${params.mainRepo}; cd ${params.mainRepoFolder}; echo `pwd`;"
-                        //     }
-                        // }
-                
                         stage("pytest嵌入"){
                                     steps{
                                             echo "$repo仓: pytest嵌入"
