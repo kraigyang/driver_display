@@ -19,7 +19,7 @@ pipeline {
         stage("多仓CI") {
             steps {
                 script {
-                    repoJobs()
+                    parallel repoJobs()
                 }
             }
         }
@@ -38,7 +38,7 @@ def repoJobs() {
         stage(repo) {
            echo "Step for $repo"
         }
-        stage("代码检出"){
+        stage(repo + "代码检出"){
            echo "$repo 代码检出"
            sh"rm -rf  $repo; git clone $GITHUB_URL_PREFIX$repo$GITHUB_URL_SUFFIX; echo `pwd`;"
         }
@@ -46,7 +46,7 @@ def repoJobs() {
             echo "$repo pytest嵌入"
             // sh 'echo $PATH'
             // sh 'printenv'
-            sh 'cp -r /home/jenkins_home/pytest $WORKSPACE/$mainRepoName'
+            sh 'cp -r /home/jenkins_home/pytest $WORKSPACE/$repo'
         }
         stage("编译测试"){
             echo "$repo 编译测试"
