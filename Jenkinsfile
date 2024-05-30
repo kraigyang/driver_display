@@ -29,7 +29,7 @@ pipeline {
     }
 
     stages {
-         stage("多仓CI"){
+        // stage("多仓CI"){
         //     steps {
         //         script {
         //             for (repo in relatedRepos) {
