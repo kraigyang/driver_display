@@ -27,9 +27,9 @@ pipeline {
     }
 }
 
-
 def repos() {
-  return ["ComponentStarry", "driver_display",  "axtrap"]
+  // return ["ComponentStarry", "driver_display",  "axtrap"]
+  return ["driver_display"]
 }
 
 def repoJobs() {
@@ -51,7 +51,7 @@ def repoJobs() {
         }
         stage(repo + "编译测试"){
             withEnv(["repoName=$repo"]) { // it can override any env variable
-                echo "repoName = ${repoName}"
+                echo "repoName = ${env.repoName}"
             }
             echo "$repo 编译测试"
             sh 'printenv'
@@ -66,7 +66,7 @@ def repoJobs() {
         }
         stage(repo + "结果展示"){
             withEnv(["repoName=$repo"]) { // it can override any env variable
-                echo "repoName = ${repoName}"
+                echo "repoName = ${env.repoName}"
             }
             echo "$repo 结果展示"
             sh 'printenv'
