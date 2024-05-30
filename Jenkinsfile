@@ -1,3 +1,4 @@
+def relatedRepos = ["ComponentStarry", "driver_display",  "axtrap"]
 pipeline {
     agent any
 
@@ -31,7 +32,6 @@ pipeline {
         stage("多仓CI"){
             steps {
                 script {
-                    def relatedRepos = ["ComponentStarry", "driver_display",  "axtrap"]
                     for (repo in relatedRepos) {
                         stage("$repo仓: 代码检出"){
                             steps{
@@ -77,7 +77,7 @@ pipeline {
                                         echo "-------------------------allure report generating end ----------------------------------------------------"
                                     }
                                 }
-                    }
+                    } // For
                 } // Script
             } // Steps
         } // Stage
