@@ -4,7 +4,7 @@ pipeline {
     environment {
         name = "ComponentStarry"
         mainRepoName = "ComponentStarry"
-        repoName = "ComponentStarry"
+        // repoName = "ComponentStarry"
         JENKINS_URL = "http://49.51.192.19:9095"
         JOB_PATH = "job/github_test_yk"
         REPORT_PATH = "allure"
