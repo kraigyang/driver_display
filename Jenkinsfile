@@ -51,13 +51,13 @@ def repoJobs() {
         }
         stage(repo + "编译测试"){
             withEnv(["repoName=$repo"]) { // it can override any env variable
-                echo "repoName = ${env.repoName}"
+                echo "repoName = ${repoName}"
+                echo "$repo 编译测试"
+                sh 'printenv'
+                echo "--------------------------------------------$repo test start------------------------------------------------"
+                sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                echo "--------------------------------------------$repo test end  ------------------------------------------------"
             }
-            echo "$repo 编译测试"
-            sh 'printenv'
-            echo "--------------------------------------------$repo test start------------------------------------------------"
-            sh 'export pywork=$WORKSPACE/${env.repoName} && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
-            echo "--------------------------------------------$repo test end  ------------------------------------------------"
         }
         stage(repo + "报告生成") {
             echo "$repo 报告生成"
@@ -66,14 +66,14 @@ def repoJobs() {
         }
         stage(repo + "结果展示"){
             withEnv(["repoName=$repo"]) { // it can override any env variable
-                echo "repoName = ${env.repoName}"
+                echo "repoName = ${repoName}"
+                echo "$repo 结果展示"
+                sh 'printenv'
+                echo "-------------------------$repo allure report generating start---------------------------------------------------"
+                sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
+                allure includeProperties: false, jdk: 'jdk17', report: "$repo/pytest/report/html", results: [[path: "$repo/pytest/report/result"]]
+                echo "-------------------------$repo allure report generating end ----------------------------------------------------"
             }
-            echo "$repo 结果展示"
-            sh 'printenv'
-            echo "-------------------------$repo allure report generating start---------------------------------------------------"
-            sh 'export pywork=$WORKSPACE/${env.repoName} && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
-            allure includeProperties: false, jdk: 'jdk17', report: "$repo/pytest/report/html", results: [[path: "$repo/pytest/report/result"]]
-            echo "-------------------------$repo allure report generating end ----------------------------------------------------"
         }
     }
   }
