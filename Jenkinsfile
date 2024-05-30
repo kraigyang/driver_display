@@ -51,7 +51,7 @@ def repoJobs() {
         stage(repo + "编译测试"){
             echo "$repo 编译测试"
             echo "--------------------------------------------$repo test start------------------------------------------------"
-            sh 'export pywork=$WORKSPACE/\$repo && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+            sh 'export pywork=$WORKSPACE/'$repo' && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
             echo "--------------------------------------------$repo test end  ------------------------------------------------"
         }
         stage(repo + "报告生成") {
@@ -62,7 +62,7 @@ def repoJobs() {
         stage(repo + "结果展示"){
             echo "$repo 结果展示"
             echo "-------------------------$repo allure report generating start---------------------------------------------------"
-            sh 'export pywork=$WORKSPACE/\$repo && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
+            sh 'export pywork=$WORKSPACE/'$repo' && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
             allure includeProperties: false, jdk: 'jdk17', report: "$repo/pytest/report/html", results: [[path: "$repo/pytest/report/result"]]
             echo "-------------------------$repo allure report generating end ----------------------------------------------------"
         }
