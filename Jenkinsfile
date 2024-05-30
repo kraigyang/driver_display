@@ -40,31 +40,31 @@ def repoJobs() {
         }
         stage(repo + "代码检出"){
            echo "$repo 代码检出"
-           sh"rm -rf  $repo; git clone $GITHUB_URL_PREFIX$repo$GITHUB_URL_SUFFIX; echo `pwd`;"
+           sh "rm -rf  $repo; git clone $GITHUB_URL_PREFIX$repo$GITHUB_URL_SUFFIX; echo `pwd`;"
         }
-        stage(repo + "pytest嵌入"){
+        stage(repo + "自动化嵌入"){
             echo "$repo pytest嵌入"
             // sh 'echo $PATH'
             // sh 'printenv'
-            sh 'cp -r /home/jenkins_home/pytest $WORKSPACE/$repo'
+            sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo"
         }
         stage(repo + "编译测试"){
             echo "$repo 编译测试"
-            echo "--------------------------------------------test start------------------------------------------------"
-            // sh ' export pywork=$WORKSPACE/$mainRepoName && cd $pywork/pytest  && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
-            echo "--------------------------------------------test end  ------------------------------------------------"
+            echo "--------------------------------------------$repo test start------------------------------------------------"
+            sh "export pywork=$WORKSPACE/$repo && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir"
+            echo "--------------------------------------------$repo test end  ------------------------------------------------"
         }
         stage(repo + "报告生成") {
             echo "$repo 报告生成"
             // 输出 Allure 报告地址
-            echo "Allure Report URL: ${allureReportUrl}"
+            echo "$repo Allure Report URL: ${allureReportUrl}"
         }
         stage(repo + "结果展示"){
             echo "$repo 结果展示"
-            echo "-------------------------allure report generating start---------------------------------------------------"
-            // sh 'export pywork=$WORKSPACE/$mainRepoName && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
-            // allure includeProperties: false, jdk: 'jdk17', report: "$mainRepoName/pytest/report/html", results: [[path: "$mainRepoName/pytest/report/result"]]
-            echo "-------------------------allure report generating end ----------------------------------------------------"
+            echo "-------------------------$repo allure report generating start---------------------------------------------------"
+            sh 'export pywork=$WORKSPACE/$repo && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
+            allure includeProperties: false, jdk: 'jdk17', report: "$repo/pytest/report/html", results: [[path: "$repo/pytest/report/result"]]
+            echo "-------------------------$repo allure report generating end ----------------------------------------------------"
         }
     }
   }
