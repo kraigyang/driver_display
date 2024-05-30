@@ -31,18 +31,18 @@ pipeline {
     stages {
          stage("多仓CI"){
         //     steps {
-                 script {
-                     for (repo in relatedRepos) {
-                         echo "current repo is $repo"
+        //         script {
+        //             for (repo in relatedRepos) {
+        //                 echo "current repo is $repo"
                         stage("代码检出"){
                             steps{
-                               echo "$repo仓: 代码检出"
+                               echo "代码检出"
                                sh"rm -rf  $repo; git clone $GITHUB_URL_PREFIX$repo$GITHUB_URL_SUFFIX; echo `pwd`;"
                             }
                         }
                         stage("pytest嵌入"){
                                     steps{
-                                            echo "$repo仓: pytest嵌入"
+                                            echo "pytest嵌入"
                                             sh 'echo $PATH'
                                             sh 'printenv'
                                             sh 'cp -r /home/jenkins_home/pytest $WORKSPACE/$repo'
@@ -50,7 +50,7 @@ pipeline {
                                 }
                         stage("编译测试"){
                                     steps {
-                                            echo "$repo仓: 编译测试"
+                                            echo "编译测试"
                                             echo "--------------------------------------------test start------------------------------------------------"
                                             // sh ' export pywork=$WORKSPACE/$mainRepoName && cd $pywork/pytest  && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
                                             echo "--------------------------------------------test end  ------------------------------------------------"
@@ -61,7 +61,7 @@ pipeline {
                         stage("报告生成") {
                             steps {
                                 script {
-                                    echo "$repo仓: 报告生成"
+                                    echo "报告生成"
                                     // 输出 Allure 报告地址
                                     echo "Allure Report URL: ${allureReportUrl}"
                                 }
@@ -70,17 +70,17 @@ pipeline {
                 
                         stage("结果展示"){
                                     steps{
-                                        echo "$repo仓: 结果展示"
+                                        echo "结果展示"
                                         echo "-------------------------allure report generating start---------------------------------------------------"
                                         // sh 'export pywork=$WORKSPACE/$mainRepoName && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
                                         // allure includeProperties: false, jdk: 'jdk17', report: "$mainRepoName/pytest/report/html", results: [[path: "$mainRepoName/pytest/report/result"]]
                                         echo "-------------------------allure report generating end ----------------------------------------------------"
                                     }
                                 }
-                     } // For
-                 } // Script
+          //          } // For
+         //        } // Script
         //     } // Steps
-         } // Stage
+      //   } // Stage
     } // Stages
 
     post {
