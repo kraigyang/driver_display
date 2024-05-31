@@ -4,7 +4,8 @@ pipeline {
     environment {
         name = "ComponentStarry"
         mainRepoName = "ComponentStarry"
-        // repoName = "ComponentStarry"
+        // currentRepoName = $(echo $GIT_URL | awk '{}'
+        currentRepoName = $GIT_URL.substring($GIT_URL.lastIndexOf('/') + 1, $GIT_URL.length() - 4)
         JENKINS_URL = "http://49.51.192.19:9095"
         JOB_PATH = "job/github_test_yk"
         REPORT_PATH = "allure"
@@ -29,7 +30,7 @@ pipeline {
 
 def repos() {
   // return ["ComponentStarry", "driver_display",  "axtrap"]
-  return ["driver_display",  "axtrap"]
+  return [${currentRepoName}]
 }
 
 def repoJobs() {
