@@ -7,7 +7,7 @@ pipeline {
         // currentRepoName = $(echo $GIT_URL | awk '{}'
         startPos = $GIT_URL.lastIndexOf('/') + 1
         endPos = $GIT_URL.length() - 4
-        currentRepoName = "${GIT_URL.substring(\$startPos, \$endPos)}"
+        currentRepoName = "${GIT_URL.substring($startPos, $endPos)}"
         JENKINS_URL = "http://49.51.192.19:9095"
         JOB_PATH = "job/github_test_yk"
         REPORT_PATH = "allure"
