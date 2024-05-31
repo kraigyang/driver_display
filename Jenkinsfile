@@ -5,7 +5,8 @@ pipeline {
         name = "ComponentStarry"
         mainRepoName = "ComponentStarry"
         // currentRepoName = $(echo $GIT_URL | awk '{}'
-        // currentRepoName = "${GIT_URL.substring(0,6)}"
+        currentRepoName = "currentrepo-${GIT_URL.substring(0, 6)}"
+        NODE_BASE_NAME = "ui-node-${GIT_COMMIT.substring(0, 6)}"
         JENKINS_URL = "http://49.51.192.19:9095"
         JOB_PATH = "job/github_test_yk"
         REPORT_PATH = "allure"
