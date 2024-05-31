@@ -29,7 +29,7 @@ pipeline {
 }
 
 def getRepoName() {
-    return $GIT_URL.substring($GIT_URL.lastIndexOf('/') + 1, $GIT_URL.length()) 
+    return "${GIT_URL}.substring(${GIT_URL}.lastIndexOf('/') + 1, ${GIT_URL}.length())"
 }
 
 def repos() {
