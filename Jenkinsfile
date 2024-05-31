@@ -83,7 +83,7 @@ def repoJobs() {
                 sh 'printenv'
                 echo "--------------------------------------------$repo test start------------------------------------------------"
                 def TAG = repoName == mainRepoName ? "mainrepo" : "childrepo"
-                sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -m mainrepo -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -m ${TAG} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
                 echo "--------------------------------------------$repo test end  ------------------------------------------------"
             }
         }
