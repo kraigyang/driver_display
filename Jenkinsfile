@@ -29,10 +29,14 @@ pipeline {
             }
         }
         stage("报告合并"){
-                echo "-------------------------allure report generating start---------------------------------------------------"
-                sh 'cd $WORKSPACE && allure generate ./report/result -o ./report/html --clean'
-                allure includeProperties: false, jdk: 'jdk17', report: "report/html", results: [[path: "report/result"]]
-                echo "-------------------------allure report generating end ----------------------------------------------------"
+            steps {
+                script {
+                    echo "-------------------------allure report generating start---------------------------------------------------"
+                    sh 'cd $WORKSPACE && allure generate ./report/result -o ./report/html --clean'
+                    allure includeProperties: false, jdk: 'jdk17', report: "report/html", results: [[path: "report/result"]]
+                    echo "-------------------------allure report generating end ----------------------------------------------------"
+                }
+            }
         } 
     }
 
