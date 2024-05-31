@@ -3,8 +3,9 @@ pipeline {
 
     environment {
         name = "ComponentStarry"
+        // 主仓名
         mainRepoName = "ComponentStarry"
-        // currentRepoName = $(echo $GIT_URL | awk '{}'
+        // 提交仓名
         currentRepoName = "${GIT_URL.substring(GIT_URL.lastIndexOf('/')+1, GIT_URL.length()-4)}"
         NODE_BASE_NAME = "ui-node-${GIT_COMMIT.substring(0, 6)}"
         JENKINS_URL = "http://49.51.192.19:9095"
@@ -30,8 +31,7 @@ pipeline {
 }
 
 def repos() {
-  // return ["ComponentStarry", "driver_display",  "axtrap"]
-  return ["$currentRepoName"]
+  return ["$currentRepoName", "$mainRepoName"]
 }
 
 def repoJobs() {
