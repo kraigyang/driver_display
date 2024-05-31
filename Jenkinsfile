@@ -73,9 +73,9 @@ def repoJobs() {
                 sh 'printenv'
                 echo "--------------------------------------------$repo test start------------------------------------------------"
                 if (repoName == mainRepoName){
-                    sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && python3 -m pytest -m mainrepo -sv --alluredir report/result testcase/test_arceos.py'
+                    sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && python3 -m pytest -m mainrepo -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
                 } else {
-                    sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && python3 -m pytest -m childrepo -sv --alluredir report/result testcase/test_arceos.py'
+                    sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && python3 -m pytest -m childrepo -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
                 }
                 echo "--------------------------------------------$repo test end  ------------------------------------------------"
             }
@@ -91,7 +91,7 @@ def repoJobs() {
                 echo "$repo 结果展示"
                 sh 'printenv'
                 echo "-------------------------$repo allure report generating start---------------------------------------------------"
-                sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && allure generate ./report/result -o ./report/html'
+                sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
                 allure includeProperties: false, jdk: 'jdk17', report: "$repo/pytest/report/html", results: [[path: "$repo/pytest/report/result"]]
                 echo "-------------------------$repo allure report generating end ----------------------------------------------------"
             }
