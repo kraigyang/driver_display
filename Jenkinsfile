@@ -72,11 +72,7 @@ def repoJobs() {
                 echo "$repo 编译测试"
                 sh 'printenv'
                 echo "--------------------------------------------$repo test start------------------------------------------------"
-                if (repoName == mainRepoName) {
-                    sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
-                } else {
-                    sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos_cargo_test.py'
-                }
+                    sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py'
                 echo "--------------------------------------------$repo test end  ------------------------------------------------"
             }
         }
