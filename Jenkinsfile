@@ -5,7 +5,7 @@ pipeline {
         name = "ComponentStarry"
         mainRepoName = "ComponentStarry"
         // currentRepoName = $(echo $GIT_URL | awk '{}'
-        currentRepoName = $GIT_URL.substring($GIT_URL.lastIndexOf('/') + 1, $GIT_URL.length() - 4)
+        currentRepoName = "${GIT_URL.substring($GIT_URL.lastIndexOf('/') + 1, $GIT_URL.length() - 4)}"
         JENKINS_URL = "http://49.51.192.19:9095"
         JOB_PATH = "job/github_test_yk"
         REPORT_PATH = "allure"
