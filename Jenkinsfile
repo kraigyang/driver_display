@@ -35,14 +35,14 @@ pipeline {
             script{
                 mail to:"${REPORT_EMAIL}",
                 subject:"PipeLine'${JOB_NAME}'(${BUILD_NUMBER})执行失败",
-                body:"${currentRepoName}仓CI报告链接：\n pipeline '${JOB_NAME}'(${BUILD_NUMBER}) (${allureReportUrl})"
+                body:"${currentRepoName}仓CI报告链接：\nPipeline '${JOB_NAME}'(${BUILD_NUMBER}) (${allureReportUrl})"
             }
         }
         success{
             script{
                 mail to:"${REPORT_EMAIL}",
                 subject:"PipeLine'${JOB_NAME}'(${BUILD_NUMBER})执行成功",
-                body:"${currentRepoName}仓CI报告链接：\n pipeline '${JOB_NAME}'(${BUILD_NUMBER}) (${allureReportUrl})"
+                body:"${currentRepoName}仓CI报告链接：\nPipeline '${JOB_NAME}'(${BUILD_NUMBER}) (${allureReportUrl})"
             }
         }
     }
@@ -72,7 +72,11 @@ def repoJobs() {
                 echo "$repo 编译测试"
                 sh 'printenv'
                 echo "--------------------------------------------$repo test start------------------------------------------------"
-                sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                if (repoName == mainRepoName) {
+                    sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                } else {
+                    sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && python3 -m pytest -sv --alluredir report/result testcase/test_arceos_cargo_test.py'
+                }
                 echo "--------------------------------------------$repo test end  ------------------------------------------------"
             }
         }
@@ -87,7 +91,7 @@ def repoJobs() {
                 echo "$repo 结果展示"
                 sh 'printenv'
                 echo "-------------------------$repo allure report generating start---------------------------------------------------"
-                sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
+                sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && allure generate ./report/result -o ./report/html'
                 allure includeProperties: false, jdk: 'jdk17', report: "$repo/pytest/report/html", results: [[path: "$repo/pytest/report/result"]]
                 echo "-------------------------$repo allure report generating end ----------------------------------------------------"
             }
