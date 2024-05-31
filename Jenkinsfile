@@ -28,6 +28,12 @@ pipeline {
                 }
             }
         }
+        stage("报告合并"){
+                echo "-------------------------allure report generating start---------------------------------------------------"
+                sh 'cd $WORKSPACE && allure generate ./report/result -o ./report/html --clean'
+                allure includeProperties: false, jdk: 'jdk17', report: "report/html", results: [[path: "report/result"]]
+                echo "-------------------------allure report generating end ----------------------------------------------------"
+        } 
     }
 
     post {
@@ -91,8 +97,7 @@ def repoJobs() {
                 echo "$repo 结果展示"
                 sh 'printenv'
                 echo "-------------------------$repo allure report generating start---------------------------------------------------"
-                sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && allure generate ./report/result -o ./report/html --clean'
-                allure includeProperties: false, jdk: 'jdk17', report: "$repo/pytest/report/html", results: [[path: "$repo/pytest/report/result"]]
+                sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && cp -r ./report $WORKSPACE'
                 echo "-------------------------$repo allure report generating end ----------------------------------------------------"
             }
         }
