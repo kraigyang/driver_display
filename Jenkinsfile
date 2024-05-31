@@ -31,7 +31,7 @@ pipeline {
 
 def repos() {
   // return ["ComponentStarry", "driver_display",  "axtrap"]
-  return [$currentRepoName]
+  return ["$currentRepoName"]
 }
 
 def repoJobs() {
