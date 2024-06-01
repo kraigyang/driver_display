@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     environment {
         name = "ComponentStarry"
         // 主仓名
