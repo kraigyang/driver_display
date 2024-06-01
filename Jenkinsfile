@@ -74,7 +74,10 @@ def repoJobs() {
             echo "$repo pytest嵌入"
             // sh 'echo $PATH'
             // sh 'printenv'
-            sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo; sed -i -e 's@currentRepoName@"${currentRepoName}"@g' $WORKSPACE/$repo/pytest/config.py"
+            sh """
+                cp -r /home/jenkins_home/pytest $WORKSPACE/$repo;
+                sed -i "s#\"仓库名\": .*#\"仓库名\": \"${currentRepoName}\",#" $WORKSPACE/$repo/pytest/config.py
+               """
         }
         stage(repo + "编译测试"){
             withEnv(["repoName=$repo"]) { // it can override any env variable
