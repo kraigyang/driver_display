@@ -74,7 +74,7 @@ def repoJobs() {
             echo "$repo pytest嵌入"
             // sh 'echo $PATH'
             // sh 'printenv'
-            sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo; sed -e 's/GIT_URL/'"$GIT_URL"'/g' -e 's/currentRepoName/'"$currentRepoName"'/g' -e 's/GIT_BRANCH/'"$GIT_BRANCH"'/g' -e 's/GIT_COMMIT/'"$GIT_COMMIT"'/g' $WORKSPACE/$repo/pytest/config.py"
+            sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo; sed -i -e 's@GIT_URL@'"$GIT_URL"'@g' -e 's@currentRepoName@'"$currentRepoName"'@g' -e 's@GIT_BRANCH@'"$GIT_BRANCH"'@g' -e 's@GIT_COMMIT@'"$GIT_COMMIT"'@g' $WORKSPACE/$repo/pytest/config.py"
         }
         stage(repo + "编译测试"){
             withEnv(["repoName=$repo"]) { // it can override any env variable
