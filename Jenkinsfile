@@ -74,10 +74,7 @@ def repoJobs() {
             echo "$repo pytest嵌入"
             // sh 'echo $PATH'
             // sh 'printenv'
-            sh """
-                 sed -i "s#\"仓库名\": .*#\"仓库名\": \"${currentRepoName}\",#" /home/jenkins_home/pytest/config.py
-                 cp -r /home/jenkins_home/pytest $WORKSPACE/$repo;
-               """
+            sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo"
         }
         stage(repo + "编译测试"){
             withEnv(["repoName=$repo"]) { // it can override any env variable
@@ -86,9 +83,9 @@ def repoJobs() {
                 sh 'printenv'
                 echo "--------------------------------------------$repo test start------------------------------------------------"
                 if (repoName == mainRepoName){
-                    sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -m mainrepo -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                    sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -m mainrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
                 } else {
-                    sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -m childrepo -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                    sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -m childrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
                 }
                 echo "--------------------------------------------$repo test end  ------------------------------------------------"
             }
