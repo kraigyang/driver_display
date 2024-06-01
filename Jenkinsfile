@@ -28,7 +28,7 @@ pipeline {
                 }
             }
         }
-        stage("报告合并"){
+        stage("合并展示"){
             steps {
                 script {
                     echo "-------------------------allure report generating start---------------------------------------------------"
@@ -70,17 +70,12 @@ def repoJobs() {
            echo "$repo 代码检出"
            sh "rm -rf  $repo; git clone $GITHUB_URL_PREFIX$repo$GITHUB_URL_SUFFIX; echo `pwd`;"
         }
-        stage(repo + "自动化嵌入"){
-            echo "$repo pytest嵌入"
-            // sh 'echo $PATH'
-            // sh 'printenv'
-            sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo"
-        }
         stage(repo + "编译测试"){
             withEnv(["repoName=$repo"]) { // it can override any env variable
                 echo "repoName = ${repoName}"
                 echo "$repo 编译测试"
                 sh 'printenv'
+                sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo"
                 echo "--------------------------------------------$repo test start------------------------------------------------"
                 if (repoName == mainRepoName){
                     sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -m mainrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
@@ -90,16 +85,12 @@ def repoJobs() {
                 echo "--------------------------------------------$repo test end  ------------------------------------------------"
             }
         }
-        stage(repo + "报告生成") {
-            echo "$repo 报告生成"
-            // 输出 Allure 报告地址
-            echo "$repo Allure Report URL: ${allureReportUrl}"
-        }
-        stage(repo + "结果展示"){
+        stage(repo + "报告生成"){
             withEnv(["repoName=$repo"]) { // it can override any env variable
                 echo "repoName = ${repoName}"
-                echo "$repo 结果展示"
-                sh 'printenv'
+                echo "$repo 报告生成"
+                // 输出 Allure 报告地址
+                echo "$repo Allure Report URL: ${allureReportUrl}"
                 echo "-------------------------$repo allure report generating start---------------------------------------------------"
                 sh 'export pywork=$WORKSPACE/${repoName} && cd $pywork/pytest && cp -r ./report $WORKSPACE'
                 echo "-------------------------$repo allure report generating end ----------------------------------------------------"
