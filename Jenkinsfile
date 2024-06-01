@@ -75,8 +75,8 @@ def repoJobs() {
             // sh 'echo $PATH'
             // sh 'printenv'
             sh """
-                cp -r /home/jenkins_home/pytest $WORKSPACE/$repo;
-                sed -i "s#\"仓库名\": .*#\"仓库名\": \"${currentRepoName}\",#" $WORKSPACE/$repo/pytest/config.py
+                 sed -i "s#\"仓库名\": .*#\"仓库名\": \"${currentRepoName}\",#" /home/jenkins_home/pytest/config.py
+                 cp -r /home/jenkins_home/pytest $WORKSPACE/$repo;
                """
         }
         stage(repo + "编译测试"){
