@@ -44,8 +44,7 @@ pipeline {
     post {
         failure{
             script{
-                mail to:"${REPORT_EMAIL}",
-                subject:"PipeLine'${JOB_NAME}'(${BUILD_NUMBER})执行失败",
+                mail subject:"PipeLine '${JOB_NAME}'(${BUILD_NUMBER}) 执行失败",
                 // body:"${currentRepoName}仓CI报告链接：\nPipeline '${JOB_NAME}'(${BUILD_NUMBER}) (${allureReportUrl})"
                 body: """
 <div id="content">
@@ -77,8 +76,7 @@ pipeline {
         }
         success{
             script{
-                mail to:"${REPORT_EMAIL}",
-                subject:"PipeLine'${JOB_NAME}'(${BUILD_NUMBER})执行成功",
+                mail subject:"PipeLine '${JOB_NAME}'(${BUILD_NUMBER}) 执行成功",
                 // body:"${currentRepoName}仓CI报告链接：\nPipeline '${JOB_NAME}'(${BUILD_NUMBER}) (${allureReportUrl})"
                 body: """
 <div id="content">
