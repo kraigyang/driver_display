@@ -16,6 +16,7 @@ pipeline {
         buildNumber = "${currentBuild.number}"
         // 构建 Allure 报告地址
         allureReportUrl = "${JENKINS_URL}/${JOB_PATH}/${buildNumber}/${REPORT_PATH}"
+        FROM_EMAIL="bityk@163.com"
         REPORT_EMAIL="528198540@qq.com"
     }
     
@@ -47,27 +48,31 @@ pipeline {
                 subject:"PipeLine'${JOB_NAME}'(${BUILD_NUMBER})执行失败",
                 // body:"${currentRepoName}仓CI报告链接：\nPipeline '${JOB_NAME}'(${BUILD_NUMBER}) (${allureReportUrl})"
                 body: """
-                        <div id="content">
-                        <h1>仓库${currentRepoName} CI报告</h1>
-                        <div id="sum2">
-                          <h2>构建结果</h2>
-                          <ul>
-                          <li>Job URL : <a href='${BUILD_URL}'>${BUILD_URL}</a></li>
-                          <li>执行结果 : <a>执行失败</a></li>
-                          <li>Job名称 : <a id="url_1">${JOB_NAME} [${BUILD_NUMBER}]</a></li>
-                          <li>项目名称 : <a>${JOB_NAME}</a></li>
-                          </ul>
-                        </div>
-                        <div id="sum0">
-                        <h2>GIT 信息</h2>
-                        <ul>
-                        <li>GIT项目地址 : <a>${GIT_URL}</a></li>
-                        <li>GIT项目当前分支名 : ${GIT_BRANCH}</li>
-                        <li>GIT最后一次提交CommitID : ${GIT_COMMIT}</li>
-                        </ul>
-                        </div>
-                        </div>
-                """
+<div id="content">
+<h1>仓库${currentRepoName} CI报告</h1>
+<div id="sum2">
+  <h2>构建结果</h2>
+  <ul>
+  <li>Job URL : <a href='${BUILD_URL}'>${BUILD_URL}</a></li>
+  <li>执行结果 : <a>执行失败</a></li>
+  <li>Job名称 : <a id="url_1">${JOB_NAME} [${BUILD_NUMBER}]</a></li>
+  <li>项目名称 : <a>${JOB_NAME}</a></li>
+  </ul>
+</div>
+<div id="sum0">
+<h2>GIT 信息</h2>
+<ul>
+<li>GIT项目地址 : <a>${GIT_URL}</a></li>
+<li>GIT项目当前分支名 : ${GIT_BRANCH}</li>
+<li>GIT最后一次提交CommitID : ${GIT_COMMIT}</li>
+</ul>
+</div>
+</div>
+                """,
+        charset: 'utf-8',
+        from: "${FROM_EMAIL}",
+        mimeType: 'text/html',
+		to: "${REPORT_EMAIL}"
             }
         }
         success{
@@ -76,28 +81,32 @@ pipeline {
                 subject:"PipeLine'${JOB_NAME}'(${BUILD_NUMBER})执行成功",
                 // body:"${currentRepoName}仓CI报告链接：\nPipeline '${JOB_NAME}'(${BUILD_NUMBER}) (${allureReportUrl})"
                 body: """
-                        <div id="content">
-                        <h1>仓库${currentRepoName} CI报告</h1>
-                        <div id="sum2">
-                          <h2>构建结果</h2>
-                          <ul>
-                          <li>报告URL : <a href='${allureReportUrl}'>${allureReportUrl}</a></li>
-                          <li>Job URL : <a href='${BUILD_URL}'>${BUILD_URL}</a></li>
-                          <li>执行结果 : <a>执行成功</a></li>
-                          <li>Job名称 : <a id="url_1">${JOB_NAME} [${BUILD_NUMBER}]</a></li>
-                          <li>项目名称 : <a>${JOB_NAME}</a></li>
-                          </ul>
-                        </div>
-                        <div id="sum0">
-                        <h2>GIT 信息</h2>
-                        <ul>
-                        <li>GIT项目地址 : <a>${GIT_URL}</a></li>
-                        <li>GIT项目当前分支名 : ${GIT_BRANCH}</li>
-                        <li>GIT最后一次提交CommitID : ${GIT_COMMIT}</li>
-                        </ul>
-                        </div>
-                        </div>
-                """
+<div id="content">
+<h1>仓库${currentRepoName} CI报告</h1>
+<div id="sum2">
+  <h2>构建结果</h2>
+  <ul>
+  <li>报告URL : <a href='${allureReportUrl}'>${allureReportUrl}</a></li>
+  <li>Job URL : <a href='${BUILD_URL}'>${BUILD_URL}</a></li>
+  <li>执行结果 : <a>执行成功</a></li>
+  <li>Job名称 : <a id="url_1">${JOB_NAME} [${BUILD_NUMBER}]</a></li>
+  <li>项目名称 : <a>${JOB_NAME}</a></li>
+  </ul>
+</div>
+<div id="sum0">
+<h2>GIT 信息</h2>
+<ul>
+<li>GIT项目地址 : <a>${GIT_URL}</a></li>
+<li>GIT项目当前分支名 : ${GIT_BRANCH}</li>
+<li>GIT最后一次提交CommitID : ${GIT_COMMIT}</li>
+</ul>
+</div>
+</div>
+                """,
+        charset: 'utf-8',
+        from: "${FROM_EMAIL}",
+        mimeType: 'text/html',
+		to: "${REPORT_EMAIL}"
             }
         }
     }
