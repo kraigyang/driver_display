@@ -25,8 +25,7 @@ pipeline {
             steps {
                 script {
                     sh "rm -rf $WORKSPACE/report"
-                    // parallel repoJobs()
-	            repoJobs()
+                    parallel repoJobs()
                 }
             }
         }
