@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     environment {
         // 主仓名
         mainRepoName = "ComponentStarry"
@@ -24,7 +25,8 @@ pipeline {
             steps {
                 script {
                     sh "rm -rf $WORKSPACE/report"
-                    parallel repoJobs()
+                    // parallel repoJobs()
+	            repoJobs()
                 }
             }
         }
