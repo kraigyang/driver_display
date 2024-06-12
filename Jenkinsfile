@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     environment {
         // 主仓名
         mainRepoName = "ComponentStarry"
@@ -24,8 +24,10 @@ pipeline {
         stage("多仓CI") {
             steps {
                 script {
-                    sh "rm -rf $WORKSPACE/report"
-                    parallel repoJobs()
+		        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+	                    sh "rm -rf $WORKSPACE/report"
+	                    parallel repoJobs()
+			}
                 }
             }
         }
@@ -52,6 +54,7 @@ pipeline {
 <div id="sum2">
   <h2>构建结果</h2>
   <ul>
+  <li>报告URL : <a href='${allureReportUrl}'>${allureReportUrl}</a></li>
   <li>Job URL : <a href='${BUILD_URL}'>${BUILD_URL}</a></li>
   <li>执行结果 : <a>执行失败</a></li>
   <li>Job名称 : <a id="url_1">${JOB_NAME} [${BUILD_NUMBER}]</a></li>
@@ -123,19 +126,23 @@ def repoJobs() {
            sh "rm -rf  $repo; git clone $GITHUB_URL_PREFIX$repo$GITHUB_URL_SUFFIX; echo `pwd`;"
         }
         stage(repo + "编译测试"){
-            withEnv(["repoName=$repo"]) { // it can override any env variable
-                echo "repoName = ${repoName}"
-                echo "$repo 编译测试"
-                sh 'printenv'
-                sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo"
-                echo "--------------------------------------------$repo test start------------------------------------------------"
-                if (repoName == mainRepoName){
-                    sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -m mainrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
-                } else {
-                    sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -m childrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
-                }
-                echo "--------------------------------------------$repo test end  ------------------------------------------------"
-            }
+                script {
+		        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                           withEnv(["repoName=$repo"]) { // it can override any env variable
+                                echo "repoName = ${repoName}"
+                                echo "$repo 编译测试"
+                                sh 'printenv'
+                                sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo"
+                                echo "--------------------------------------------$repo test start------------------------------------------------"
+                                if (repoName == mainRepoName){
+                                  sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -m mainrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                                } else {
+                                  sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -m childrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                                }
+                                echo "--------------------------------------------$repo test end  ------------------------------------------------"
+                          }
+		       }
+               }
         }
         stage(repo + "报告生成"){
             withEnv(["repoName=$repo"]) { // it can override any env variable
