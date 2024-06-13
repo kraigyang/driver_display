@@ -1,7 +1,6 @@
 pipeline {
     agent any
 
-
     environment {
         // 主仓名
         mainRepoName = "ComponentStarry"
@@ -133,9 +132,9 @@ def repoJobs() {
                                 sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo"
                                 echo "--------------------------------------------$repo test start------------------------------------------------"
                                 if (repoName == mainRepoName){
-                                  sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -n auto -m pytest -n auto -m mainrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                                  sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -n auto -m mainrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
                                 } else {
-                                  sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -n auto -m pytest -n auto -m childrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                                  sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -n auto -m childrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
                                 }
                                 echo "--------------------------------------------$repo test end  ------------------------------------------------"
                           }
