@@ -47,42 +47,30 @@ pipeline {
     post {
         failure{
             script{
-                mail subject:"PipeLine '${JOB_NAME}'(${BUILD_NUMBER}) 执行失败",
-                // body:"${currentRepoName}仓CI报告链接：\nPipeline '${JOB_NAME}'(${BUILD_NUMBER}) (${allureReportUrl})"
-                body: """
-<div id="content">
-<h1>仓库${currentRepoName} CI报告</h1>
-<div id="sum2">
-  <h2>构建结果</h2>
-  <ul>
-  <li>报告URL : <a href='${allureReportUrl}'>${allureReportUrl}</a></li>
-  <li>Job URL : <a href='${BUILD_URL}'>${BUILD_URL}</a></li>
-  <li>执行结果 : <a>执行失败</a></li>
-  <li>Job名称 : <a id="url_1">${JOB_NAME} [${BUILD_NUMBER}]</a></li>
-  <li>项目名称 : <a>${JOB_NAME}</a></li>
-  </ul>
-</div>
-<div id="sum0">
-<h2>GIT 信息</h2>
-<ul>
-<li>GIT项目地址 : <a>${GIT_URL}</a></li>
-<li>GIT项目当前分支名 : ${GIT_BRANCH}</li>
-<li>GIT最后一次提交CommitID : ${GIT_COMMIT}</li>
-</ul>
-</div>
-</div>
-                """,
-        charset: 'utf-8',
-        from: "${FROM_EMAIL}",
-        mimeType: 'text/html',
-		to: "${REPORT_EMAIL}"
+                updateGithubCommitStatus('failure', "Build failed")
             }
         }
         success{
             script{
-                mail subject:"PipeLine '${JOB_NAME}'(${BUILD_NUMBER}) 执行成功",
-                // body:"${currentRepoName}仓CI报告链接：\nPipeline '${JOB_NAME}'(${BUILD_NUMBER}) (${allureReportUrl})"
-                body: """
+                updateGithubCommitStatus('success', "Build succeeded")
+            }
+        }
+	unstable{
+            script{
+                updateGithubCommitStatus('unstable', "Build unstable")
+            }
+        }
+	always{
+            script{
+		sendResultMail()
+            }
+        }
+    }
+}
+
+def sendResultMail(){
+        mail subject:"PipeLine '${JOB_NAME}'(${BUILD_NUMBER}) Build ${currentBuild.currentResult}",
+        body: """
 <div id="content">
 <h1>仓库${currentRepoName} CI报告</h1>
 <div id="sum2">
@@ -90,7 +78,7 @@ pipeline {
   <ul>
   <li>报告URL : <a href='${allureReportUrl}'>${allureReportUrl}</a></li>
   <li>Job URL : <a href='${BUILD_URL}'>${BUILD_URL}</a></li>
-  <li>执行结果 : <a>执行成功</a></li>
+  <li>执行结果 : <a>Build ${currentBuild.currentResult}</a></li>
   <li>Job名称 : <a id="url_1">${JOB_NAME} [${BUILD_NUMBER}]</a></li>
   <li>项目名称 : <a>${JOB_NAME}</a></li>
   </ul>
@@ -104,14 +92,23 @@ pipeline {
 </ul>
 </div>
 </div>
-                """,
+        """,
         charset: 'utf-8',
         from: "${FROM_EMAIL}",
         mimeType: 'text/html',
-		to: "${REPORT_EMAIL}"
-            }
-        }
-    }
+	to: "${REPORT_EMAIL}"
+}
+
+
+def updateGithubCommitStatus(String state, String description) {
+    def context = 'continuous-integration/jenkins'
+    def target_url = "${env.JOB_URL}/${env.BUILD_NUMBER}"
+
+    sh """
+    curl -s -X POST -H "Authorization: token ${GITHUB_TOKEN}" \
+    -d '{\"state\": \"${state}\", \"target_url\": \"${target_url}\", \"description\": \"${description}\", \"context\": \"${context}\"}' \
+    https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/statuses/${COMMIT_SHA}
+    """
 }
 
 def repos() {
@@ -136,9 +133,9 @@ def repoJobs() {
                                 sh "cp -r /home/jenkins_home/pytest $WORKSPACE/$repo"
                                 echo "--------------------------------------------$repo test start------------------------------------------------"
                                 if (repoName == mainRepoName){
-                                  sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -n auto -m mainrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                                  sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -n auto -m pytest -n auto -m mainrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
                                 } else {
-                                  sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -m pytest -n auto -m childrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
+                                  sh 'export pywork=$WORKSPACE/${repoName} repoName=${repoName} && cd $pywork/pytest && python3 -n auto -m pytest -n auto -m childrepo --cmdrepo=${repoName} -sv --alluredir report/result testcase/test_arceos.py --clean-alluredir'
                                 }
                                 echo "--------------------------------------------$repo test end  ------------------------------------------------"
                           }
