@@ -117,7 +117,8 @@ def updateGithubCommitStatus(String state, String description) {
 }
 
 def repos() {
-  return ["$currentRepoName", "$mainRepoName"]
+  // return ["$currentRepoName", "$mainRepoName"]
+  return ["$currentRepoName"]
 }
 
 def repoJobs() {
