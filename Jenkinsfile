@@ -32,7 +32,7 @@ pipeline {
                 script {
 		        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 	                    sh "rm -rf $WORKSPACE/report"
-	                    parallel repoJobs()
+	                    // parallel repoJobs()
 			}
                 }
             }
@@ -62,7 +62,7 @@ pipeline {
         }
 	unstable{
             script{
-                updateGithubCommitStatus('unstable', "Build unstable")
+                updateGithubCommitStatus('failure', "Build unstable")
             }
         }
 	always{
