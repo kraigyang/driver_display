@@ -66,11 +66,11 @@ pipeline {
                 updateGithubCommitStatus('unstable', "Build unstable")
             }
         }
-	always{
-            script{
-		sendResultMail()
-            }
-        }
+	// always{
+ //            script{
+	// 	sendResultMail()
+ //            }
+ //        }
     }
 }
 
