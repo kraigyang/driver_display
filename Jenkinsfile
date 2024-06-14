@@ -115,13 +115,11 @@ def updateGithubCommitStatus(String state, String description) {
     // https://api.github.com/repos/${GA_REPO_OWNER}/${GA_REPO_NAME}/statuses/${GA_COMMIT_SHA}
     // """
 
-    withEnv(["eState=${state}", "eTarget_url=${target_url}", "eDescription=${description}", "eContext=${context}"]) { 
-	    sh '''
-	    curl -s -X POST -H "Authorization: token ${GA_TOKEN}" \
-	    -d "{\"state\": \"${eState}\", \"target_url\": \"${eTarget_url}\", \"description\": \"${eDescription}\", \"context\": \"${eContext}\"}" \
-	    https://api.github.com/repos/"${GA_REPO_OWNER}"/"${GA_REPO_NAME}"/statuses/"${GA_COMMIT_SHA}"
-	    '''
-    }
+    sh '''
+    curl -s -X POST -H "Authorization: token ${GA_TOKEN}" \
+    -d "{\"state\": \"'${state}'\", \"target_url\": \"'${target_url}'\", \"description\": \"'${description}'\", \"context\": \"'${context}'\"}" \
+    https://api.github.com/repos/"${GA_REPO_OWNER}"/"${GA_REPO_NAME}"/statuses/"${GA_COMMIT_SHA}"
+    '''
 }
 
 def repos() {
