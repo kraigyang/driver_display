@@ -117,7 +117,7 @@ def updateGithubCommitStatus(String state, String description) {
 	
     sh '''
     curl -s -X POST -H "Authorization: token ${GA_TOKEN}" \
-    -d '{\"state\": \""${state}"\", \"target_url\": \""${target_url}"\", \"description\": \""${description}"\", \"context\": \""${context}"\"}' \
+    -d '{\"state\": \"$state\", \"target_url\": \"$target_url\", \"description\": \"$description\", \"context\": \"$context\"}' \
     https://api.github.com/repos/"${GA_REPO_OWNER}"/"${GA_REPO_NAME}"/statuses/"${GA_COMMIT_SHA}"
     '''
 }
