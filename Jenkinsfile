@@ -105,12 +105,13 @@ def sendResultMail(){
 }
 
 
-import groovy.json.JsonSlurperClassic
+import groovy.json.JsonSlurper
 def getSecrets(jsonFilePath, var) {
-    def json = readFile(file:jsonFilePath)
-    def data = new JsonSlurperClassic().parseText(json)
-    echo "var: ${data.var}"
-    return ${data.var}
+    def fileContent = readFile "${jsonFilePath}"
+    Map jsonContent = (Map) new JsonSlurper().parseText(fileContent)
+    var = jsonContent.get(var)
+    echo "var : ${var}"
+    return var
 }
 
 
