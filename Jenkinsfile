@@ -32,7 +32,7 @@ pipeline {
                 script {
 		        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 	                    sh "rm -rf $WORKSPACE/report"
-	                    // parallel repoJobs()
+	                    parallel repoJobs()
 			}
                 }
             }
