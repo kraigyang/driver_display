@@ -5,7 +5,8 @@ pipeline {
         // 主仓名
         mainRepoName = "ComponentStarry"
         // 提交仓名
-        currentRepoName = "${GIT_URL.substring(GIT_URL.lastIndexOf('/')+1, GIT_URL.length()-4)}"
+        // currentRepoName = "${GIT_URL.substring(GIT_URL.lastIndexOf('/')+1, GIT_URL.length()-4)}"
+	currentRepoName = "${GIT_URL}"
         NODE_BASE_NAME = "ui-node-${GIT_COMMIT.substring(0, 6)}"
         JENKINS_URL = "http://49.51.192.19:9095"
         JOB_PATH = "job/github_test_yk"
@@ -21,7 +22,7 @@ pipeline {
         // 将GA_TOKEN(GA = Github Access)替换为在 Jenkins 中存储的 GitHub 访问令牌的凭据 ID
         GA_TOKEN = credentials("GithubAccessToken")
         GA_REPO_OWNER = 'kraigyang'
-        GA_REPO_NAME = "${currentRepoName}"
+        GA_REPO_NAME = "${GIT_URL.substring(GIT_URL.lastIndexOf('/')+1, GIT_URL.length()-4)}"
         // 动态获取当前构建的提交 SHA
         GA_COMMIT_SHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
     }
