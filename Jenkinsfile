@@ -105,6 +105,13 @@ def sendResultMail(){
 }
 
 
+import groovy.json.JsonSlurper
+
+def getSecrets(jsonFilePath, var) {
+  return new JsonSlurper().parseText(readFile(jsonFilePath))[var]
+}
+
+
 def updateGithubCommitStatus(String state, String description) {
     def context = 'continuous-integration/jenkins'
     def target_url = "${env.JOB_URL}/${env.BUILD_NUMBER}"
@@ -117,7 +124,7 @@ def updateGithubCommitStatus(String state, String description) {
 }
 
 def repos() {
-  return ["$currentRepoName", "$mainRepoName"]
+  return ["$currentRepoName"] +  getSecrets("./README.json", "test_repos")
 }
 
 def repoJobs() {
