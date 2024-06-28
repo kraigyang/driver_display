@@ -110,7 +110,7 @@ def getSecrets(jsonFilePath, var) {
     def fileContent = readFile "${jsonFilePath}"
     Map jsonContent = (Map) new JsonSlurper().parseText(fileContent)
     var = jsonContent.get(var)
-    var = "${var.substring(0, -4)}"
+    var = "${var[0, -4]}"
     echo "var : ${var}"
     return var
 }
