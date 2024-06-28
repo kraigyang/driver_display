@@ -32,7 +32,7 @@ pipeline {
                 script {
 		        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 	                    sh "rm -rf $WORKSPACE/report"
-	                    parallel repoJobs()
+	                    // parallel repoJobs()
 			}
                 }
             }
@@ -105,10 +105,10 @@ def sendResultMail(){
 }
 
 
-import groovy.json.JsonSlurper
-
 def getSecrets(jsonFilePath, var) {
-  return new JsonSlurper().parseText(readFile(jsonFilePath))[var]
+    def dataObject = readJSON file: jsonFilePath
+    echo "var: ${dataObject.var}"
+    return ${dataObject.var}
 }
 
 
