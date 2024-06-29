@@ -134,7 +134,7 @@ def repoJobs() {
   jobs = [:]
   repos().each { repo ->
     jobs[repo] = {
-	repoFolder = "${repo.substring(repo.lastIndexOf('/')+1, repo.length()-4)}"
+	def repoFolder = "${repo.substring(repo.lastIndexOf('/')+1, repo.length()-4)}"
         stage(repoFolder + "代码检出"){
            echo "$repoFolder 代码检出"
            sh "rm -rf  $repoFolder; git clone $repo; echo `pwd`;"
